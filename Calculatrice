@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- Coding by Serge-Codeur - https://fb.me/Serge.Codeur -->
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculatrice | JS</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="David Mp/calculatrice🧑‍💻">
+      <div id="ecran"></div>
+      <div class="buttons">
+        <div class="button"><i> C</i></div>
+        <div class="button"><i>DEL</i></div>
+        <div class="button"><i>/</i></div>
+        <div class="button"><i>*</i></div>
+
+        <div class="button"><i>7</i></div>
+        <div class="button"><i>8</i></div>
+        <div class="button"><i>9</i></div>
+        <div class="button"><i>-</i></div>
+
+        <div class="button"><i>4</i></div>
+        <div class="button"><i>5</i></div>
+        <div class="button"><i>6</i></div>
+        <div class="button"><i>+</i></div>
+
+        <div class="button"><i>1</i></div>
+        <div class="button"><i>2</i></div>
+        <div class="button"><i>3</i></div>
+        <div class="button"><i>.</i></div>
+
+        <div class="button"><i>(</i></div>
+        <div class="button"><i>0</i></div>
+        <div class="button"><i>)</i></div>
+        <div id="equal" class="button"><i>=</i></div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+<script>const ecran = document.querySelector("#ecran");
+
+const buttons = Array.from(document.querySelectorAll(".button"));
+
+buttons.map((button) => {
+  button.addEventListener("click", (e) => {
+    switch (e.target.innerText) {
+      case "C":
+        ecran.innerText = ""; // Vide le contenu de l'ecran
+        break;
+      case "=":
+        try {
+          ecran.innerText = eval(ecran.innerText); // Calcule le contenu de l'ecran
+        } catch {
+          ecran.innerText = "Error";
+        }
+        break;
+      case "DEL":
+        if (ecran.innerText) {
+          ecran.innerText = ecran.innerText.slice(0, -1); // Supprime le dernier chiffre au click du boutton del
+        }
+        break;
+      default:
+        ecran.innerText += e.target.innerText; // Ajoute le contenu du boutton sur lequel l'utilisateur à cliqué
+    }
+    if (ecran.innerText.length >= 14) {
+      // je diminue la taille du texte dans l'ecran
+      ecran.style.fontSize = "20px";
+    } else {
+      ecran.style.fontSize = "30px";
+    }
+  });
+});</script>
+
+<style>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #203240;
+}
+
+.calculatrice {
+  width: 300px;
+  background: #203240;
+  border-radius: 50px;
+  padding: 10px;
+  box-shadow: 25px 25px 75px rgb(0, 0, 0, 0.25),
+    10px 10px 70px rgb(0, 0, 0, 0.25),
+    inset 5px 5px 10px rgb(255, 255, 255, 0.2),
+    inset -5px -5px 15px rgb(0, 0, 0, 0.75);
+}
+#ecran {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  background: #0c1c26;
+  color: #2fc900;
+  height: 100px;
+  width: 100%;
+  font-size: 30px;
+  font-weight: 500;
+  padding-right: 10px;
+  border-radius: 40px 40px 10px 10px;
+  box-shadow: inset 0px 1px 0px #7d7c7e, 0px 1px 0px #7d7c7e,
+    inset 0px -1px 0px #0c0c0c;
+  border: 2px solid #070f14;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  margin: 40px 5px 10px;
+  place-items: center;
+}
+
+.buttons .button {
+  position: relative;
+  color: #2fc900;
+  cursor: pointer;
+  border: 2px solid #08141c;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+#equal {
+  color: #2d506a;
+  background: #2fc900;
+}
+#equal:hover {
+  box-shadow: 0.4rem 0.4rem 1rem #2fc900 inset,
+    -0.4rem -0.4rem 1rem #80f33e inset;
+}
+.buttons .button:hover {
+  box-shadow: 0.4rem 0.4rem 1rem #1c1c1c inset,
+    -0.4rem -0.4rem 1rem #2d506a inset;
+}
+
+.buttons .button::before {
+  position: absolute;
+  content: "";
+  height: 50px;
+  width: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
+  box-shadow: inset 0px 1px 0px #7d7c7e;
+}</style>
