@@ -17,11 +17,7 @@
        
             
     
-    <!-- Header
-        begins
-        here
-    -->
-  
+    <!<!--  -->
     
     <div class="header">
     
@@ -91,8 +87,9 @@
         <a href="">👉 𝐏𝐎𝐑𝐓𝐅𝐎𝐋𝐈𝐎 👈</a>
         
           <p><code>nos services sont disponibles pour vous, vous besoins et vos désirs</code></p>
+          
           <a href="Davbot.html"><button>📳 Davbot 📱</button></a>
-            
+          
    
             
             
@@ -579,12 +576,71 @@ function closeSearch() {
 };
 
 
-
-
-
-
 </script>
+
+</head>
+<body><li>
+  <section id="contact">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <form id="contactForm">
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your Name" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Your Email" required>
+        </div>
+        <div> "fas fa-phone"></i>
+    <input type="tel" value="Your Phone"><br></div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+          class="fas fa-phone"></i>
+    
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Collect form data
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      
+      // WhatsApp API URL
+      const phoneNumber = '+243846064543'; // Replace with your WhatsApp number
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=Hello,%20My%20Name%20is%20${encodeURIComponent(name)}.%0AEmail:%20${encodeURIComponent(email)}.%0AMessage:%20${encodeURIComponent(message)}`;
+      
+      // Redirect user to WhatsApp chat
+      window.open(whatsappURL, '_blank');
+    });</li>
+  </script>
     <style>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
 @import "https://use.fontawesome.com/releases/v5.5.0/css/all.css";
@@ -1515,16 +1571,64 @@ body{
 }
 
 
-
- 
-
-        
-
-     
-
 </Style>
 
 
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	<style>
+    body {
+      
+    .container {
+      max-width: 10000px;
+      margin: 0 auto;
+      padding: 30px;
+
+    
+    form {
+      max-width: 50000px;
+      margin: 0 auto;
+      background: #2d3748;
+      padding: 30px;
+      border-radius: 80px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      
+      margin-bottom: 2px;
+      display: block;
+ 
+    }
+    input, textarea {
+      width: 80%;
+      padding: 1px;
+      margin-bottom: 20px;
+      
+    }
+
+    /* Button */
+    button {
+      width: 80%;
+      padding: 10px;
+      background: #3182ce;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+    
+    }
+  </style>
+
 	
