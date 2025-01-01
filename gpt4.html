@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot with Global Chat</title>
+    <link rel="icon" href="https://i.imgur.com/AnFWx6c.jpeg" type="image/ico">
+  <link rel="shortcut icon" href="https://i.imgur.com/AnFWx6c.jpeg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #282c34;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 94vh;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 20px;
+        }
+
+        .intro-container, .chat-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .intro-container {
+            display: block;
+        }
+
+        .chat-logo {
+            color: #61dafb;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            animation: logoFadeIn 1s ease;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #222;
+            border: 1px solid #61dafb;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: calc(100% - 110px);
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            background-color: #222;
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #282c34;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #21a1f1;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        p {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .user-message, .bot-message {
+            background-color: #444;
+            margin-bottom: 5px;
+            animation: messageFadeIn 0.5s ease;
+        }
+
+        .user-message {
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            color: #61dafb;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            margin: 0 2px;
+            background-color: #61dafb;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.4s infinite both;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes logoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes messageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes blink {
+            0%,
+            80%,
+            100% {
+                opacity: 0;
+            }
+            40% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro-container" id="intro-container">
+            <h1>Welcome to the AI Chatbot</h1>
+            <p>Please enter your name to start chatting:</p>
+            <input type="text" id="user-input" placeholder="Your Name">
+            <button onclick="startChat()">Start Chat</button>
+        </div>
+        <div class="chat-container" id="ai-chat-container">
+            <div class="chat-logo">WELCOME DAVBOT</div>
+            <div class="chat-box" id="ai-chat-box"></div>
+            <div class="switch-container">
+                <button onclick="switchToGlobalChat()">Switch to Global Chat</button>
+            </div>
+            <input type="text" id="ai-user-message" placeholder="Enter your message...">
+            <button onclick="sendAIMessage()">Send</button>
+        </div>
+        <div class="chat-container" id="global-chat-container" style="display:none;">
+            <div class="chat-logo">GLOBAL CHAT</div>
+            <div class="chat-box" id="global-chat-box"></div>
+            <div class="switch-container">
+                <button onclick="switchToAIChat()">Switch to AI Chat</button>
+            </div>
+            <input type="text" id="global-user-message" placeholder="Enter your message...">
+            <button onclick="sendGlobalMessage()">Send</button>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const savedName = localStorage.getItem('username');
+            if (savedName) {
+                startChat(savedName);
+            }
+        });
+
+        function startChat(name) {
+            if (!name) {
+                name = document.getElementById('user-input').value.trim();
+                if (!name) return;
+                localStorage.setItem('username', name);
+            }
+
+            document.getElementById('intro-container').style.display = 'none';
+            document.getElementById('ai-chat-container').style.display = 'block';
+            document.getElementById('ai-chat-box').innerHTML += `<p class="bot-message">Welcome, ${name}! How can I assist you today?</p>`;
+            document.getElementById('ai-user-message').focus();
+            scrollChatToBottom('ai-chat-box');
+        }
+
+        function sendAIMessage() {
+            const message = document.getElementById('ai-user-message').value.trim();
+            if (!message) return;
+
+            document.getElementById('ai-chat-box').innerHTML += `<p class="user-message">${escapeHTML(message)}</p>`;
+            scrollChatToBottom('ai-chat-box');
+
+            showTypingIndicator('ai-chat-box');
+
+            fetch('https://ai-chat-gpt-4-lite.onrender.com/api/hercai' + encodeURIComponent(message))
+                .then(response => response.json())
+                .then(data => {
+                    removeTypingIndicator('ai-chat-box');
+                    document.getElementById('ai-chat-box').innerHTML += `<p class="bot-message">${escapeHTML(data.content)}</p>`;
+                    scrollChatToBottom('ai-chat-box');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    removeTypingIndicator('ai-chat-box');
+                    document.getElementById('ai-chat-box').innerHTML += `<p class="bot-message">Error: An error occurred while processing your request.</p>`;
+                    scrollChatToBottom('ai-chat-box');
+                });
+
+            document.getElementById('ai-user-message').value = '';
+            document.getElementById('ai-user-message').focus();
+        }
+
+        function sendGlobalMessage() {
+            const message = document.getElementById('global-user-message').value.trim();
+            if (!message) return;
+
+            const name = localStorage.getItem('username');
+            socket.emit('globalMessage', { name, message: escapeHTML(message) });
+
+            document.getElementById('global-user-message').value = '';
+            document.getElementById('global-user-message').focus();
+        }
+
+        socket.on('globalMessage', (data) => {
+            if (!isSpam(data.message)) {
+                document.getElementById('global-chat-box').innerHTML += `<p class="user-message"><strong>${escapeHTML(data.name)}:</strong> ${escapeHTML(data.message)}</p>`;
+                scrollChatToBottom('global-chat-box');
+            }
+        });
+
+        socket.on('previousMessages', (messages) => {
+            document.getElementById('global-chat-box').innerHTML = '';
+            messages.forEach(data => {
+                if (!isSpam(data.message)) {
+                    document.getElementById('global-chat-box').innerHTML += `<p class="user-message"><strong>${escapeHTML(data.name)}:</strong> ${escapeHTML(data.message)}</p>`;
+                }
+            });
+            scrollChatToBottom('global-chat-box');
+        });
+
+        function switchToGlobalChat() {
+            document.getElementById('ai-chat-container').style.display = 'none';
+            document.getElementById('global-chat-container').style.display = 'block';
+            document.getElementById('global-user-message').focus();
+        }
+
+        function switchToAIChat() {
+            document.getElementById('global-chat-container').style.display = 'none';
+            document.getElementById('ai-chat-container').style.display = 'block';
+            document.getElementById('ai-user-message').focus();
+        }
+
+        function showTypingIndicator(chatBoxId) {
+            const chatBox = document.getElementById(chatBoxId);
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = 'AI is typing <span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+            typingIndicator.id = 'typing-indicator';
+            chatBox.appendChild(typingIndicator);
+            scrollChatToBottom(chatBoxId);
+        }
+
+        function removeTypingIndicator(chatBoxId) {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function scrollChatToBottom(chatBoxId) {
+            const chatBox = document.getElementById(chatBoxId);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function escapeHTML(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        function isSpam(message) {
+            const spamKeywords = ['http', 'https', 'www', 'spam'];
+            return spamKeywords.some(keyword => message.toLowerCase().includes(keyword));
+        }
+
+        document.getElementById('ai-user-message').addEventListener('keyup', function(event) {
+            if (event.key === "Enter") {
+                sendAIMessage();
+            }
+        });
+
+        document.getElementById('global-user-message').addEventListener('keyup', function(event) {
+            if (event.key === "Enter") {
+                sendGlobalMessage();
+            }
+        });
+    </script>
+</body>
+</html>
