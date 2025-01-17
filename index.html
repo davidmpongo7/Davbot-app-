@@ -1,17 +1,267 @@
+
+
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="fr">
+<head>
+    <p>.</p>
+   <img style="width:20%; height:40px;"src="https://i.imgur.com/AnFWx6c.jpeg"></img>
+     
+        <li>DAVBOT PDF ↕️⬇️</li>
+      <form action="https://www.google.com/search" method="get">
+            <button type="submit">
+                <svg style="fill:#70757a;width:24px;height:24px" focusable="false" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+            </button>
+            <input type="text" name="q">
+        </form>
+    <style>
+        
+        .intro-container, .chat-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .intro-container {
+            display: block;
+        }
+
+        .chat-logo {
+            color: #61dafb;
+            margin-bottom: 200px;
+            font-size: 24px;
+            font-weight: bold;
+            animation: logoFadeIn 1s ease;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #222;
+            border: 1px solid #61dafb;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: calc(100% - 110px);
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            background-color: #222;
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #282c34;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #21a1f1;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        
+
+       
+    </style>
+<body>
+<div class="container">
+    <div class="header">
+        
+        <h2>DAVBOT AI</h2>
+    </div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="écrivez votre question . . .">
+        <button id="send-btn">Envoyer</button>
+    </div>
+
+    <!-- Bloc d'information sur l'IA -->
+    <div class="info">
+    
+    </div>
+</div>
+
+<script type="importmap">
+    {
+         "imports": {
+               "@google/generative-ai": "https://esm.run/@google/generative-ai"
+         }
+    }
+</script>
+<script type="module">
+    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const API_KEY = "AIzaSyBUkLeLsQtfEcCGqWxeG1y7e4TVcq9olSc";
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    function filterResponse(text) {
+        // Remplace "Gemini" par "ELONZA"
+        text = text.replace(/Gemini/gi, "Ai");
+        const inappropriateWords = ["idota", "badword2"]; // Liste de mots inappropriés
+        for (let word of inappropriateWords) {
+            const regex = new RegExp(`\\b${word}\\b`, "gi");
+            text = text.replace(regex, "[censuré]");
+        }
+        return text;
+    }
+
+    async function run() {
+        const prompt = document.getElementById("user-input").value.trim().toLowerCase();
+        
+        // Afficher l'indicateur de saisie
+        const typingIndicator = document.createElement("div");
+        typingIndicator.classList.add("bot-message");
+        typingIndicator.innerHTML = `
+            <div class="message-container typing-indicator">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(typingIndicator);
+        
+        let responseText;
+
+        // Vérifier les réponses spécifiques
+        if (prompt === "bonjour à vous aussi") {
+            responseText = "Bonjour";
+        } else if (prompt === "salut je suis Davbot chatbot") {
+            responseText = "Salut";
+        } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu")) {
+            responseText = "Je m'appelle Davbot chatbot";
+        } else if (prompt.includes("créateur")) {
+            responseText = "Mon créateur est David mpongo";
+        } else {
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = await response.text();
+            responseText = filterResponse(text); // Appliquer le filtre ici
+        }
+        
+        // Supprimer l'indicateur de saisie
+        document.getElementById("chat-box").removeChild(typingIndicator);
+        
+        if (!responseText.trim()) {
+            responseText = "Désolé, je ne peux pas répondre à ça.";
+        }
+        
+        const botMessage = document.createElement("div");
+        botMessage.classList.add("bot-message");
+        botMessage.innerHTML = `
+            <div class="message-container">
+                ${marked.parse(responseText)}
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(botMessage);
+        document.getElementById("user-input").value = "";
+    }
+
+    document.getElementById("send-btn").addEventListener("click", async () => {
+        const userMessage = document.createElement("div");
+        userMessage.classList.add("user-message");
+        userMessage.innerHTML = `
+            <div class="message-container">
+                ${document.getElementById("user-input").value}
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(userMessage);
+        await run();
+    });
+</script>
+</body>
+</html>
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+  
+   
+
+   
+    
         <title>Davbot service</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="David mpongo">
     
-   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+   <link href="" rel="stylesheet">
 
 
     
     
     </head>
+    
+    
+    
+    
+  
+   
+<div
+    
     
     <body>
        
@@ -22,16 +272,13 @@
     <div class="header">
     
     
-  <i class="fas fa-user-shield" id="logo"></i>
+  <i class="" id=""></i>
     
-    <form class="searchbox">
-    <input  type="https://www.google.com/search" value=".." class="it">
-    <button class="searched"><i class="fa fa-search"></i></button>
-    </form>
     
-     <button class="search" onclick="openSearch()"><i class="fa fa-search"></i></button>
     
-    <button class="bar" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+     <button class="search" onclick="()"><i class="fa fa-search"></i></button>
+    
+    <button class="bar" onclick="openMenu()"><i class=""></i></button>
       
             
     
@@ -50,10 +297,9 @@
             <a href="#"><li><i class="fa fa-home"></i>Home</li></a>
            
          
-              
-                <a href="davbot site"><li><i class=""></i>💳 davbot site</li></a>
+            <li>  <a href="https://play1-rho.vercel.app/"class="fas fa-users">𝐏𝐥𝐚𝐲📱 𝐒𝐭𝐨𝐫𝐞📱</a></li>
                 
-                 <a href="davbot site"><li><i class=""></i> 📳My portfolio 📲</li></a>
+                 <a href=""><li class="fas fa-users"></i> 📳My portfolio 📲</li></a>
                   
             
             <a href="#about"><li><i class="fas fa-users"></i>About </li></a>
@@ -81,86 +327,16 @@
     
     
     <div>
-    <div class="headertext">
-        <h1>𝑁𝑂𝑆 𝑆𝐸𝑅𝑉𝐼𝐶𝐸𝑆</h1>
-        
-        <a href="">👉 𝐏𝐎𝐑𝐓𝐅𝐎𝐋𝐈𝐎 👈</a>
-        
-          <p><code>nos services sont disponibles pour vous, vous besoins et vos désirs</code></p>
-          
-          <a href="Davbot.html"><button>📳 Davbot 📱</button></a>
-          
-   
-            
-            
-            
-     </div>
-        
-      </div>
-    <br><br>
-        
-            
-<div class="icons">
-
-<br><br>
-        
-         <i class="social-icon fab fa-facebook-f"></i>
-        <i class="social-icon fab fa-instagram"></i>
-        <i class="social-icon fab fa-twitter"></i>
-        <i class="social-icon fab fa-github"></i>
-        
-        <i class="social-icon fab fa-reddit"></i>
-        
-        <i class="social-icon fab fa-google"></i>
-        
-        </div>          <br><br>
-        
-            
-    </div>
-    
-    
-     <!-- About
-        begins
-        here
-        
-    
-    -->
+    <div 
     
     
     
-    <div class="about" id="about" data-aos="fade-bottom">
-    <br>
-    <h1>notre entreprise</h1>
-    
-    
-        <p>
-        <b>notre entreprise est un service dont vous pouvez nous contacter et nous informer sur le projet dont vous avez et, nous ferions de notre mieux pour vous aider à le faire grâce à l'informatique</b>
-        </p>
-        <p>
-        <code>vous pouvez nous dire ce dont vous voulez faire comme par exemple :<m>un site web,</p>
-        <p> un logo, 
-        <p>une application,</p>
-        <p>ou soit vous désirez en apprendre davantage sur l'informatique </p>
-        <p>ou bien vous voulez apprendre à créer des IA via WHATSAPP ou Facebook</p>
-        <p> cela vous est libre des choix et vous pouvez proposer ce dont vous voulez créer</p>
-        </code>
-<br><br>
-
-<i class="social-icon fab fa-facebook-f"></i>
-        <i class="social-icon fab fa-instagram"></i>
-        <i class="social-icon fab fa-twitter"></i>
-        <i class="social-icon fab fa-github"></i>
-        
-        <i class="social-icon fab fa-reddit"></i>
-        
-       <br><br><br>
+    <div 
         
         
     </div>
     
-    <div style="text-align:center">
-    <i class="fas fa-shield-alt" style="font-size:100px;position:relative;z-index:20;top:50px;color:gray"></i>
-    </div>
+    
     
     
      <!-- Services
@@ -234,7 +410,151 @@
  <a href="index2.html"><button>en apprendre plus </button></a>
    </div>
         
+        
+        
+        
+        <div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>QR</b></h2>
+   
+       <p>vous pouvez créé le QR pour vous site ici</p>
+       <br>
+   
+   
+   
+   
 
+       
+       
+ <a href="qr.html"><button>QR</button></a>
+   </div>
+        
+        
+        
+        
+        <div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>game</b></h2>
+   
+       <p>game en 3D</p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="https://jeuc.vercel.app/"><button>3D 𝐆𝐀𝐌𝐄 </button></a>
+   </div>
+        
+        
+        
+        <div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>snack</b></h2>
+   
+       <p>joué un jeux snack en 3D</p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="game.html"><button>game snack </button></a>
+   </div>
+        
+<div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>calculatrice de âge</b></h2>
+   
+       <p>vous pouvez calculer vos âge</p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="calcu.html"><button>calculatrice de l'âge</button></a>
+   </div>
+
+<div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>calculatrice</b></h2>
+   
+       <p>vous pouvez calculer </p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="calculatrice.html"><button>calculatrice </button></a>
+   </div>
+
+<div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>liké</b></h2>
+   
+       <p>booster votre publication </p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="like.html"><button>boost liké </button></a>
+   </div>
+
+<div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>trans</b></h2>
+   
+       <p>translate pour plus de 50 langue </p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="https://trans-puce.vercel.app/"><button>traducteur </button></a>
+   </div>
+
+
+
+<div class="insurance" data-aos="fade-left"> 
+   <i class="fas fa-shield-alt"></i>
+   <br>
+   <h2><b>la moyenne</b></h2>
+   
+       <p>calcul de la moyen de l'élève %</p>
+       <br>
+   
+   
+   
+   
+
+       
+       
+ <a href="billet.html"><button>calcul de la moyen</button></a>
+   </div>
 <div class="insurance" data-aos="fade-up"> 
    
    <i class="fas fa-shield-alt"></i>
@@ -337,14 +657,10 @@
    <div class="gallery" id="gallery">
        
       <br><br>
-      <div style="width:70%;padding-left:15%;padding-right:15%">
+      <div style="width:50%;padding-left:10%;padding-right:10%">
       
       <br><br><br>
-      <h1>apprendre quelques notions sur l'informatique</h1> 
       
-      <p>vous pouvez en apprendre davantage sur l'informatique </p>
-      <p>soit devenir un développeur web</p>
-       
        </div>
        <br>
       <div class="images" data-aos="fade-up">
@@ -474,7 +790,7 @@
    <i class="fas fa-shield-alt"></i>
    <h2><b>nous contacter via WhatsApp</b></h2>
    
-    <a href="https://wa.me/243859358994" class="button">contacter</a>
+    <a href="https://wa.me/243846064543" class="button">contacter</a>
        <br>
        
        </li>
@@ -638,7 +954,7 @@ margin:0;
 
 
 .header {
-    background-image:url("https://files.catbox.moe/hewj08.jpeg");
+    background-image:url("");
     background-attachment:fixed;
     background-size:cover;
     background-color:rgba(0,0,0,0.7);
@@ -1260,7 +1576,7 @@ h1 {
             background: linear-gradient(330deg, #febb5c, #dd9993, #febb5c, #fd7cb9, #fd7cb9, #fd7cb9, #febb5c, #dd9993, #febb5c, #fd7cb9, #fd7cb9, #febb5c, #fd7cb9, #b24afd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
+   
 </style>
       </body>
 	</html>
@@ -1306,15 +1622,13 @@ ul {
   list-style-type: none;
 }
 
-li {
-  padding: 10px;
-  border: 1px solid #0f0;
+li {padding: 1px;
+  border: 5px solid #0f0;
   margin: 5px;
 }
-v{padding: 10px;
-  border: 1px solid #ff0;
-  margin: 5px;
-}
+
+
+
 a {
   color: #f00;
   text-decoration: none;
@@ -1324,7 +1638,7 @@ a {
 }
 
 a:hover {
-  background-color: #f00;
+  background-color: #ecececb1;
   color: #000;
     
       </style>
@@ -1393,8 +1707,7 @@ a:hover {
 	
 	<style>
 body{
-    backgrou
-    font:
+    
     
 
   
@@ -1579,4 +1892,75 @@ body{
     }
   </style>
 
+
+<img style="width:20%;height:1
+                     <link rel="icon" href="https://i.imgur.com/AnFWx6c.jpeg" type="image/ico">
+  <link rel="shortcut icon" href="">  
+  
+ 📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵
+ 📵                                         📵
+ 📵     <img style="width:105%; height:300px;"src="https://i.imgur.com/naY3qiQ.jpeg"></img>                       
+ 📵                              
+ 📵
+ 📵
+📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵
+         <h2> 𝐃𝐀𝐕𝐁𝐎𝐓 𝐒𝐈𝐓𝐄 🌿</h2>
+         
+   <p>𝙳𝚊𝚟𝚋𝚘𝚝 𝚞𝚗 𝚜𝚒𝚝𝚎✅ 𝚌𝚛𝚎́𝚎 𝚙𝚊𝚛 𝚍𝚊𝚟𝚒𝚍 𝙼𝚙𝚘𝚗𝚐𝚘 🦅  𝚞𝚗 𝚊𝚙𝚙𝚕𝚒 𝚎𝚡𝚝𝚛𝚊 𝚙𝚘𝚞𝚛 𝚟𝚘𝚞𝚜 𝚊𝚒𝚍𝚎 𝚍𝚊𝚗𝚜 𝚍𝚒𝚟𝚎𝚛𝚜 𝚝𝚊𝚌𝚑𝚎. 🌿
+       
+
 	
+
+<div style="font-size: 25px">
+	<script type="text/javascript">
+	farbbibliothek = new Array();
+	farbbibliothek[0] = new Array("#FF0000","#FF1100","#FF2200","#FF3300","#FF4400","#FF5500","#FF6600","#FF7700","#FF8800","#FF9900","#FFaa00","#FFbb00","#FFcc00","#FFdd00","#FFee00","#FFff00","#FFee00","#FFdd00","#FFcc00","#FFbb00","#FFaa00","#FF9900","#FF8800","#FF7700","#FF6600","#FF5500","#FF4400","#FF3300","#FF2200","#FF1100");
+	farbbibliothek[1] = new Array("#00FF00","#000000","#00FF00","#00FF00");
+	farbbibliothek[2] = new Array("#00FF00","#FF0000","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00");
+	farbbibliothek[3] = new Array("#FF0000","#FF4000","#FF8000","#FFC000","#FFFF00","#C0FF00","#80FF00","#40FF00","#00FF00","#00FF40","#00FF80","#00FFC0","#00FFFF","#00C0FF","#0080FF","#0040FF","#0000FF","#4000FF","#8000FF","#C000FF","#FF00FF","#FF00C0","#FF0080","#FF0040");
+	farbbibliothek[4] = new Array("#FF0000","#EE0000","#DD0000","#CC0000","#BB0000","#AA0000","#990000","#880000","#770000","#660000","#550000","#440000","#330000","#220000","#110000","#000000","#110000","#220000","#330000","#440000","#550000","#660000","#770000","#880000","#990000","#AA0000","#BB0000","#CC0000","#DD0000","#EE0000");
+	farbbibliothek[5] = new Array("#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF");
+	farbbibliothek[6] = new Array("#0000FF","#FFFF00");
+	farben = farbbibliothek[4];
+	function farbschrift(){for(var b=0;b<Buchstabe.length;b++){document.all["a"+b].style.color=farben[b]}farbverlauf()}function string2array(b){Buchstabe=new Array();while(farben.length<b.length){farben=farben.concat(farben)}k=0;while(k<=b.length){Buchstabe[k]=b.charAt(k);k++}}function divserzeugen(){for(var b=0;b<Buchstabe.length;b++){document.write("<span id='a"+b+"' class='a"+b+"'>"+Buchstabe[b]+"</span>")}farbschrift()}var a=1;function farbverlauf(){for(var b=0;b<farben.length;b++){farben[b-1]=farben[b]}farben[farben.length-1]=farben[-1];setTimeout("farbschrift()",30)}var farbsatz=1;function farbtauscher(){farben=farbbibliothek[farbsatz];while(farben.length<text.length){farben=farben.concat(farben)}farbsatz=Math.floor(Math.random()*(farbbibliothek.length-0.0001))}setInterval("farbtauscher()",5000);
+
+	text=
+	" ✰✰𝐃𝐀𝐕𝐈𝐃.𝐌𝐏𝐎𝐍𝐆𝐎✰✰ 🍁:::🍂::::::✰"
+	string2array(text);
+	divserzeugen();
+	//document.write(text);
+	</script></div>
+	<p id='name'>
+	<script></script>
+
+
+
+
+<script src="https://ôcdn.jsdelivr.net/npm/sweetalert2@11"></script>ôï
+</head>
+<body>
+
+   
+<div class="container"></div>
+    
+    <script>
+        window.onload = function() {
+            Swal.fire({
+                title: '𝑫𝑨𝑽𝑩𝑶𝑻 ',
+                text: ' 𝐵𝑖𝑒𝑛𝑣𝑒𝑛𝑢(𝑒)',
+               
+                imageWidth: 100,
+                imageHeight: 100,
+                imageAlt: 'Custom image',
+                confirmButtonText: 'Got it!'
+            });
+        };
+    </script>
+</body>
+</html>
+</li>
+
+
+
+
+
