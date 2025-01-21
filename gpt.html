@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   
+        <li>DAVBOT PDF ↕️⬇️ GPT4 </li>
+        
+        
+        <p>.</p>
+        
+        
+        <style>
+    
+       *  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    
+    color: #ffffff;
+    line-height: 1;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+    
+        .intro-container, .chat-container {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            background-color: #333;
+            padding: 120px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .intro-container {
+            display: block;
+        }
+
+        .chat-logo {
+            color: #61dafb;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            animation: logoFadeIn 1s ease;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            padding: 30px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #222;
+            border: 1px solid #61dafb;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: calc(50% - 10px);
+            padding: 20px;
+            margin-right: 20px;
+            border: 5px solid #61dafb;
+            border-radius: 85px;
+            box-sizing: border-box;
+            outline: none;
+            background-color: #222;
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #282c34;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #21a1f1;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+</style>
+      
+<body>
+<div class="container">
+    <div class="header">
+        
+        <h2>DAVBOT AI</h2>
+    </div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="écrivez votre question . . .">
+        <button id="send-btn">Envoyer</button>
+    </div>
+
+    <!-- Bloc d'information sur l'IA -->
+    <div class="info">
+    
+    </div>
+</div>
+
+<script type="importmap">
+    {
+         "imports": {
+               "@google/generative-ai": "https://esm.run/@google/generative-ai"
+         }
+    }
+</script>
+<script type="module">
+    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const API_KEY = "AIzaSyBUkLeLsQtfEcCGqWxeG1y7e4TVcq9olSc";
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    function filterResponse(text) {
+        // Remplace "Gemini" par "ELONZA"
+        text = text.replace(/Gemini/gi, "Ai");
+        const inappropriateWords = ["idota", "badword2"]; // Liste de mots inappropriés
+        for (let word of inappropriateWords) {
+            const regex = new RegExp(`\\b${word}\\b`, "gi");
+            text = text.replace(regex, "[censuré]");
+        }
+        return text;
+    }
+
+    async function run() {
+        const prompt = document.getElementById("user-input").value.trim().toLowerCase();
+        
+        // Afficher l'indicateur de saisie
+        const typingIndicator = document.createElement("div");
+        typingIndicator.classList.add("bot-message");
+        typingIndicator.innerHTML = `
+            <div class="message-container typing-indicator">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(typingIndicator);
+        
+        let responseText;
+
+        // Vérifier les réponses spécifiques
+        if (prompt === "bonjour à vous aussi") {
+            responseText = "Bonjour";
+        } else if (prompt === "salut je suis Davbot chatbot") {
+            responseText = "Salut";
+        } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu")) {
+            responseText = "Je m'appelle Davbot chatbot";
+        } else if (prompt.includes("qui es tu ")) {
+            responseText = "je m'appelle Davbot4 une intelligence artificielle créé par David mpongo";
+        } else {
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = await response.text();
+            responseText = filterResponse(text); // Appliquer le filtre ici
+        }
+        
+        // Supprimer l'indicateur de saisie
+        document.getElementById("chat-box").removeChild(typingIndicator);
+        
+        if (!responseText.trim()) {
+            responseText = "Désolé, je ne peux pas répondre à ça.";
+        }
+        
+        const botMessage = document.createElement("div");
+        botMessage.classList.add("bot-message");
+        botMessage.innerHTML = `
+            <div class="message-container">
+                ${marked.parse(responseText)}
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(botMessage);
+        document.getElementById("user-input").value = "";
+    }
+
+    document.getElementById("send-btn").addEventListener("click", async () => {
+        const userMessage = document.createElement("div");
+        userMessage.classList.add("user-message");
+        userMessage.innerHTML = `
+            <div class="message-container">
+                ${document.getElementById("user-input").value}
+            </div>
+        `;
+        document.getElementById("chat-box").appendChild(userMessage);
+        await run();
+    });
+</script>
+</body>
+</html>
+
+	<Style>
+	    
+h1 {
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 24px;
+  color: #0f0;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  padding: 10px;
+  border: 1px solid #0f0;
+  margin: 5px;
+}
+v{padding: 10px;
+  border: 1px solid #ff0;
+  margin: 5px;
+}
+a {
+  color: #f00;
+  text-decoration: none;
+  border: 1px solid #f00;
+  padding: 0px 10px;
+  margin: 10px;
+}
+
+a:hover {
+  background-color: #f00;
+  color: #000;
+    
+      </style>
+	<Style>
+    body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+}
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 30px;
+  color: #0f0;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {padding: 1px;
+  border: 5px solid #0f0;
+  margin: 5px;
+}
+
+
+
+a {
+  color: #f00;
+  text-decoration: none;
+  border: 1px solid #f00;
+  padding: 0px 10px;
+  margin: 10px;
+}
+
+a:hover {
+  background-color: #ecececb1;
+  color: #000;
+    
+      </style>
+	
+	
+	
+	
+    
