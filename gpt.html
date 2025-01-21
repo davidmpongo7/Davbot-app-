@@ -220,12 +220,12 @@
         // Vérifier les réponses spécifiques
         if (prompt === "bonjour à vous !") {
             responseText = "Bonjour";
-        } else if (prompt === "salut je suis messie chatbot") {
+        } else if (prompt === "salut je suis Davbot ") {
             responseText = "Salut";
         } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu")) {
-            responseText = "Je m'appelle messie chatbot";
+            responseText = "Je m'appelle davbot";
         } else if (prompt.includes("créateur")) {
-            responseText = "Mon créateur est messie osango";
+            responseText = "Mon créateur est David mpongo";
         } else {
             const result = await model.generateContent(prompt);
             const response = await result.response;
