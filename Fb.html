@@ -1,12 +1,12 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <p>.</p>
    <img style="width:20%; height:40px;"src="https://i.imgur.com/AnFWx6c.jpeg"></img>
      
-        <li>DAVBOT PDF ↕️⬇️</li>
+        <li>🌿 DAVBOT PDF 🌿 ↕️⬇️ utiliser Google
+        dans cette barre de recherche effectuée tout vos recherches  🌿   
+          👇👇👇👇👇👇👇👇</li>
       <form action="https://www.google.com/search" method="get">
             <button type="submit">
                 <svg style="fill:#70757a;width:24px;height:24px" focusable="false" viewBox="0 0 24 24">
@@ -15,8 +15,8 @@
             </button>
             <input type="text" name="q">
         </form>
-    <style>
-        
+        <style>
+    
         .intro-container, .chat-container {
             text-align: center;
             animation: fadeIn 0.5s ease;
@@ -89,159 +89,7 @@
         button:active {
             transform: scale(0.95);
         }
-
-        
-
-       
-    </style>
-<body>
-<div class="container">
-    <div class="header">
-        
-        <h2>DAVBOT AI</h2>
-    </div>
-    <div class="chat-box" id="chat-box"></div>
-    <div class="input-container">
-        <input type="text" id="user-input" placeholder="écrivez votre question . . .">
-        <button id="send-btn">Envoyer</button>
-    </div>
-
-    <!-- Bloc d'information sur l'IA -->
-    <div class="info">
-    
-    </div>
-</div>
-
-<script type="importmap">
-    {
-         "imports": {
-               "@google/generative-ai": "https://esm.run/@google/generative-ai"
-         }
-    }
-</script>
-<script type="module">
-    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-
-    const API_KEY = "AIzaSyBUkLeLsQtfEcCGqWxeG1y7e4TVcq9olSc";
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-    function filterResponse(text) {
-        // Remplace "Gemini" par "ELONZA"
-        text = text.replace(/Gemini/gi, "Ai");
-        const inappropriateWords = ["idota", "badword2"]; // Liste de mots inappropriés
-        for (let word of inappropriateWords) {
-            const regex = new RegExp(`\\b${word}\\b`, "gi");
-            text = text.replace(regex, "[censuré]");
-        }
-        return text;
-    }
-
-    async function run() {
-        const prompt = document.getElementById("user-input").value.trim().toLowerCase();
-        
-        // Afficher l'indicateur de saisie
-        const typingIndicator = document.createElement("div");
-        typingIndicator.classList.add("bot-message");
-        typingIndicator.innerHTML = `
-            <div class="message-container typing-indicator">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        `;
-        document.getElementById("chat-box").appendChild(typingIndicator);
-        
-        let responseText;
-
-        // Vérifier les réponses spécifiques
-        if (prompt === "bonjour à vous aussi") {
-            responseText = "Bonjour";
-        } else if (prompt === "salut je suis Davbot chatbot") {
-            responseText = "Salut";
-        } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu")) {
-            responseText = "Je m'appelle Davbot chatbot";
-        } else if (prompt.includes("créateur")) {
-            responseText = "Mon créateur est David mpongo";
-        } else {
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = await response.text();
-            responseText = filterResponse(text); // Appliquer le filtre ici
-        }
-        
-        // Supprimer l'indicateur de saisie
-        document.getElementById("chat-box").removeChild(typingIndicator);
-        
-        if (!responseText.trim()) {
-            responseText = "Désolé, je ne peux pas répondre à ça.";
-        }
-        
-        const botMessage = document.createElement("div");
-        botMessage.classList.add("bot-message");
-        botMessage.innerHTML = `
-            <div class="message-container">
-                ${marked.parse(responseText)}
-            </div>
-        `;
-        document.getElementById("chat-box").appendChild(botMessage);
-        document.getElementById("user-input").value = "";
-    }
-
-    document.getElementById("send-btn").addEventListener("click", async () => {
-        const userMessage = document.createElement("div");
-        userMessage.classList.add("user-message");
-        userMessage.innerHTML = `
-            <div class="message-container">
-                ${document.getElementById("user-input").value}
-            </div>
-        `;
-        document.getElementById("chat-box").appendChild(userMessage);
-        await run();
-    });
-</script>
-</body>
-</html>
-
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-  
-   
-
-   
+</style>
     
         <title>Davbot service</title>
     <meta charset="UTF-8">
@@ -654,49 +502,7 @@
     
     -->
    
-   <div class="gallery" id="gallery">
-       
-      <br><br>
-      <div style="width:50%;padding-left:10%;padding-right:10%">
-      
-      <br><br><br>
-      
-       </div>
-       <br>
-      <div class="images" data-aos="fade-up">
-      <img src="https://files.catbox.moe/2mpikv.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">    
-        </div>
-       
-       
-           <div class="images" data-aos="fade-up">
-      <img src="https://files.catbox.moe/6b8vvo.jpeg">    
-        </div>
-       
-       
-          <div class="images" data-aos="fade-up">
-      <img src="https://files.catbox.moe/dd85gm.jpeg">    
-        </div>
-       
-       
-       
-       <div class="images" data-aos="fade-up">
-      <img src="https://files.catbox.moe/w07jca.jpeg">    
-        </div>
-        
-        
-
-        
-        
-        
-        
-        
-      
-   
-   
-   
-   
-   
-   
+  
     <!-- Contact
         begins
         here
@@ -1899,14 +1705,14 @@ body{
   
  📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵
  📵                                         📵
- 📵     <img style="width:105%; height:300px;"src="https://i.imgur.com/naY3qiQ.jpeg"></img>                       
+ 📵     <img style="width:110%; height:300px;"src="https://i.imgur.com/naY3qiQ.jpeg"></img>                       
  📵                              
  📵
  📵
 📵📵📵📵📵📵📵📵📵📵📵📵📵📵📵
-         <h2> 𝐃𝐀𝐕𝐁𝐎𝐓 𝐒𝐈𝐓𝐄 🌿</h2>
+         <h2> 🌿 𝐃𝐀𝐕𝐁𝐎𝐓 𝐒𝐈𝐓𝐄 🌿</h2>
          
-   <p>𝙳𝚊𝚟𝚋𝚘𝚝 𝚞𝚗 𝚜𝚒𝚝𝚎✅ 𝚌𝚛𝚎́𝚎 𝚙𝚊𝚛 𝚍𝚊𝚟𝚒𝚍 𝙼𝚙𝚘𝚗𝚐𝚘 🦅  𝚞𝚗 𝚊𝚙𝚙𝚕𝚒 𝚎𝚡𝚝𝚛𝚊 𝚙𝚘𝚞𝚛 𝚟𝚘𝚞𝚜 𝚊𝚒𝚍𝚎 𝚍𝚊𝚗𝚜 𝚍𝚒𝚟𝚎𝚛𝚜 𝚝𝚊𝚌𝚑𝚎. 🌿
+  <p>𝙳𝚊𝚟𝚋𝚘𝚝 𝚞𝚗 𝚜𝚒𝚝𝚎✅ 𝚌𝚛𝚎́𝚎 𝚙𝚊𝚛 𝚍𝚊𝚟𝚒𝚍 𝙼𝚙𝚘𝚗𝚐𝚘 🦅  𝚞𝚗 𝚊𝚙𝚙𝚕𝚒 𝚎𝚡𝚝𝚛𝚊 𝚙𝚘𝚞𝚛 𝚟𝚘𝚞𝚜 𝚊𝚒𝚍𝚎 𝚍𝚊𝚗𝚜 𝚍𝚒𝚟𝚎𝚛𝚜 𝚝𝚊𝚌𝚑𝚎. 🌿
        
 
 	
@@ -1936,7 +1742,7 @@ body{
 
 
 
-<script src="https://ôcdn.jsdelivr.net/npm/sweetalert2@11"></script>ôï
+<script src="https://ôcdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
