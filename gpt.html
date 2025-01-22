@@ -1,179 +1,186 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davbot Ai </title>
+    <title>Davbot 🧑‍💻</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            
-  background-image:URL();
+       body {
+    font-family: Arial, sans-serif;
+    background-color: orangered; 
+    margin: 0;
+    padding: 0;
+}
 
-            margin: 0;
-            padding: 0;
-        }
+.container {
+    max-width: 9000%;
+    margin: 0px 0px;
+    padding: 20px;
+    background-color:orangered;
+    border-radius: 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow:hidden;
+}
 
-        .container {
-            max-width: 900px;
-            
-            margin: 1px auto;
-            padding: 20px;
-                      
-  
-            overflow: hidden;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+}
 
-        .header {
-        
-            text-align: center;
-            margin-bottom: 10px;
-        }
+.header h1 {
+    font-size: 30px;
+    color: black;
+    border:solid;
+    margin: 0;
+    padding: 0;
+}
 
-        .header h1 {
-     
-            font-size: 30px;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 1px;
+    margin-bottom: 40px;
+    background-image :url('https://i.imgur.com/naY3qiQ.jpeg');
+    background-size: cover;
+}
+ 
+ .user-message {
+   justify-content: flex-end;
+ }
+ 
+ .bot-message  {
+   justify-content: flex-start;
+ }
+ 
+.user-message,
+.bot-message {
+    display: flex;
+    margin-bottom: 10px;
+}
 
-        .chat-box {
-            height: 400px;
-            overflow-y: auto;
-            padding: 10px;
-            border-radius: 55px;
-            margin-bottom: 30px;
-          
-  background:yellow;
+.message-container {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 
+    font-size: 14px;
+    position: relative;
+    word-wrap:break-word;
+}
 
-        }
+.user-message .message-container {
+    background-color: orangered;
+    border:1px solid whitesmoke;
+    color: whitesmoke;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    border-radius: 15px 0px 15px 15px;
+}
 
-        .user-message,
-        .bot-message {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
+.bot-message .message-container {
+  background-color: deepskyblue;
+    color: black;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    border-radius: 0px 15px 15px 15px;
+}
 
-        .message-container {
-            max-width: 100%;
-            padding: 20px;
-            border-radius: 55px;
-            font-size: 14px;
-            position: relative;
-        }
+.typing-indicator {
+    display: flex;
+    align-items: center;
+}
 
-        .user-message .message-container {
-            background-color:skyblue;
-            color: #004085;
-        }
+.typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: red;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
 
-        .bot-message .message-container {
-                     
+.typing-indicator .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
 
-  background:linear-gradient( skyblue,pink );
+.typing-indicator .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
 
-            color: #;
-        }
+@keyframes blink {
+    0%, 80%, 100% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+}
 
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-        }
+.input-container {
+    display: flex;
+    align-items: center;
+}
 
-        .typing-indicator .dot {
-            width: 8px;
-            height: 8px;
-            margin: 0 2px;
-            background-color: #333;
-            border-radius: 50%;
-            animation: blink 1s infinite;
-        }
+#user-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 
+    border: none;
+    outline: none;
+    margin-right: 10px;
+}
 
-        .typing-indicator .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
+#send-btn {
+    padding: 10px 20px;
+    border-radius: 
+    border: none;
+    background-color: blue;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .typing-indicator .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+#send-btn:hover {
+    background-color: orangered;
+}
 
-        @keyframes blink {
-            0%, 80%, 100% {
-                opacity: 0;
-            }
-            40% {
-                opacity: 1;
-            }
-        }
-
-        .input-container {
-            display: flex;
-            align-items: center;
-        
-        }
-
-        #user-input {
-            flex: 1;
-            padding: 10px;
-            border-radius: 55px;
-            border: none;
-            outline: none;
-            margin-right: 10px;
-        }
-
-        #send-btn {
-            padding: 10px 20px;
-            border-radius: 55px;
-            border: none;
-            background-color: #;
-            color: #ofo;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #send-btn:hover {
-            background-color: ;
-        }
-
-        .info {
-            font-family: 'Pixel', Arial, sans-serif;
-            font-size: 12px;
-            color: #;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .chat-box {
-          height: 400px;
-          width:300px;
-        }
-     
+.info {
+    font-family: 'Pixel', Arial, sans-serif;
+    font-size: 16px;
+    color: #000080;
+    margin-top: 20px;
+    text-align: center;
+}
+  footer {
+    text-align: center;
+  }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h2>𝐃𝐚𝐯𝐛𝐨𝐭 ✰ 𝐀𝐢 </h2>
-        <li><p>🌿 𝑫𝒂𝒗𝒃𝒐𝒕 🌿 𝑷𝑫𝑭 𝑨𝑰 🌿</p></li>
-	   
-
+        <h1>Davbot 🌿 Ai </h1>
     </div>
     <div class="chat-box" id="chat-box"></div>
     <div class="input-container">
-        <input type="text" id="user-input" placeholder="écrivez votre question . . .">
+        <input type="text" id="user-input" placeholder="ecrivez un message  🧑‍💻">
         <button id="send-btn">Envoyer</button>
     </div>
 
-    <!-- Bloc d'information sur l'IA -->
-    <div class="info">
+     <div class="info">
     
     </div>
 </div>
-
+<footer>
+  <p><b>Créator</b><a href="https://www.facebook.com/profile.php?id=100092277325670">David mpongo 🌿</a></p>
+</footer>
 <script type="importmap">
     {
          "imports": {
@@ -190,9 +197,9 @@
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     function filterResponse(text) {
-        // Remplace "Gemini" par "ELONZA"
+        
         text = text.replace(/Gemini/gi, "Ai");
-        const inappropriateWords = ["idota", "badword2"]; // Liste de mots inappropriés
+        const inappropriateWords = ["idota", "badword2"]; 
         for (let word of inappropriateWords) {
             const regex = new RegExp(`\\b${word}\\b`, "gi");
             text = text.replace(regex, "[censuré]");
@@ -203,7 +210,7 @@
     async function run() {
         const prompt = document.getElementById("user-input").value.trim().toLowerCase();
         
-        // Afficher l'indicateur de saisie
+        
         const typingIndicator = document.createElement("div");
         typingIndicator.classList.add("bot-message");
         typingIndicator.innerHTML = `
@@ -217,23 +224,23 @@
         
         let responseText;
 
-        // Vérifier les réponses spécifiques
+        
         if (prompt === "bonjour à vous !") {
             responseText = "Bonjour";
-        } else if (prompt === "salut je suis Davbot ") {
+        } else if (prompt === "salut moi c'est Davbot conçu pour t'aider ") {
             responseText = "Salut";
         } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu")) {
-            responseText = "Je m'appelle davbot";
+            responseText = "bah moi c'est Davbot développé par David mpongo pour te servir!";
         } else if (prompt.includes("créateur")) {
-            responseText = "Mon créateur est David mpongo";
+            responseText = "mon créateur est David mpongo contactez le pour plus d'informations ";
         } else {
             const result = await model.generateContent(prompt);
             const response = await result.response;
             const text = await response.text();
-            responseText = filterResponse(text); // Appliquer le filtre ici
+            responseText = filterResponse(text); 
         }
         
-        // Supprimer l'indicateur de saisie
+        
         document.getElementById("chat-box").removeChild(typingIndicator);
         
         if (!responseText.trim()) {
@@ -264,10 +271,14 @@
     });
 </script>
 </body>
-</html>
-
+</html
 <Style>
-	    
+    body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+}
+
 h1 {
   font-size: 36px;
   text-align: center;
@@ -309,54 +320,3 @@ a:hover {
   color: #000;
     
       </style>
-	<Style>
-    body {
-  background-color: #000;
-  color: #fff;
-  font-family: 'Courier New', monospace;
-}
-
-h1 {
-  font-size: 36px;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-size: 30px;
-  color: #0f0;
-}
-
-p {
-  margin-bottom: 20px;
-}
-
-ul {
-  list-style-type: none;
-}
-
-li {padding: 1px;
-  border: 5px solid #0f0;
-  margin: 5px;
-}
-
-
-
-a {
-  color: #f00;
-  text-decoration: none;
-  border: 1px solid #f00;
-  padding: 0px 10px;
-  margin: 10px;
-}
-
-a:hover {
-  background-color: #ecececb1;
-  color: #000;
-    
-      </style>
-	
-	
-	
-	
-    
