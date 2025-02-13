@@ -1,239 +1,480 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAVBOT GPT</title>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>davbot AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- Lien vers AOS CSS -->
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #121212;
-            color: #e0e0e0;
+        * {
             margin: 0;
-            padding: 0 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Georgia;
         }
 
-        .container {
-            background: #1e1e1e;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            max-width: 600px;
-            width: 100%;
+        body {
+            background: #ff15bd;
             display: flex;
             flex-direction: column;
-            height: 80vh;
+            height: 100vh;
+            background:linear-gradient(135deg, white,gray);
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #bb86fc;
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: blueviolet;
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            width: 40px;
+        }
+          
+
+
+        .title p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .icons {
+            display: flex;
+            gap: 15px;
             font-size: 24px;
+            cursor: pointer;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            animation: slide-in-left 0.6s ease-out;
+            overflow-y: auto;
         }
 
         .chat-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #444;
-            border-radius: 4px;
-            background-color: #2c2c2c;
-        }
-
-        .input-container {
             display: flex;
-            width: 100%;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px); /* Ajustement pour éviter le chevauchement avec le footer */
+            padding-bottom: 80px; /* Espace pour le footer */
         }
 
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #444;
-            border-radius: 4px;
-            font-size: 16px;
-            background: #333;
-            color: #e0e0e0;
-        }
-
-        button {
-            background-color: #bb86fc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        button:hover {
-            background-color: #3700b3;
-        }
-
-        .response-block {
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #444;
-            border-radius: 4px;
-            background-color: #1e1e1e;
+        .user-message, .bot-message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
             position: relative;
-        }
-
-        .user-query {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        .ai-response {
-            margin-top: 5px;
+            word-wrap: break-word;
             white-space: pre-wrap;
         }
 
-        .copy-btn {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            background-color: #6c757d;
+        .user-message {
+            align-self: flex-end;
+            background: #9b30ff;
             color: white;
+            animation: messageFadeIn 0.5s ease-out;
+        }
+
+        .bot-message {
+            background-color: #6a40fc;
+            color: #ff5f2b;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: messageFadeIn 0.5s ease-out;
+        }
+
+        @keyframes messageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            background:white;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px; /* Hauteur du footer */
+        }
+
+        footer input {
+            flex: 1;
+            padding: 12px;
             border: none;
-            padding: 5px 10px;
-            font-size: 12px;
-            border-radius: 4px;
+            border-radius: 25px;
+            background: #f0f0f0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        footer input:focus {
+            border-color: #9b30ff;
+        }
+
+        footer button {
+            background: #9b30ff;
+            color: #512bff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+            font-size: 24px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .copy-btn:hover {
-            background-color: #5a6268;
+        footer button:hover {
+            background: #8b5cf6;
         }
 
-        .footer {
-            text-align: center;
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
             margin-top: 10px;
-            color: #e0e0e0;
         }
 
-        @media (max-width: 600px) {
-            body {
-                align-items: flex-start;
-                padding-top: 20px;
-            }
-
-            .container {
-                width: 95%;
-                padding: 15px;
-            }
-
-            input[type="text"],
-            button {
-                font-size: 14px;
-            }
-
-            button {
-                padding: 8px 15px;
-            }
+        .typing-indicator .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #bbb;
+            border-radius: 50%;
+            animation: blink 1.5s infinite ease-in-out;
         }
 
-        @media (min-width: 601px) and (max-width: 1200px) {
-            .container {
-                width: 80%;
-            }
+        .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%, 80%, 100% { opacity: 0; }
+            40% { opacity: 1; }
         }
 
-        @media (min-width: 1201px) {
-            .container {
-                max-width: 600px;
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+        .logo .button {
+            background: white;
+            color: #6a40fc;
+         position:center;
+         text-align:center;
+  margin:60px;
+            padding: 10px 30px ;
+           justify-content: center;
+            text-decoration: none;
+            font-size: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo .button:hover {
+            background: #f3e8fd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo .button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: translateY(-10px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
+    <Style>
+    
+
+h1 {
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 30px;
+  color: #0f0;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {padding: 1px;
+  border: 5px solid #0f0;
+  margin: 5px;
+}
+
+
+
+
+    
+      </style>
+	
+	
 </head>
 <body>
-    <div class="container fade-in">
-        <h1>DAVBOT GPT4<i class="fas fa-robot"></i></h1>
-        <div class="chat-container" id="taeMessage"></div>
-        <div class="input-container">
-            <input type="text" id="pogiInput" placeholder="Enter your question here" onkeydown="if(event.key === 'Enter') sendQuery()">
-            <button onclick="sendQuery()">Submit</button>
+
+    <header data-aos="fade-down">
+     
+        
+             <br>
+             <br>
+             <br>
+       <div class="logo">
+       
+    
+      
+                      <a href="https://www.facebook.com/profile.php?id=100092277325670" class="button">Auteur</a>
+                      
+                  
+                     <br>
+            <h1 style="margin:20px"> Davbot</h1>
+        
         </div>
-    </div>
-    <div class="footer">
-        <script>
-            document.write(atob("wqkgMjAyNCB8IGNodXJjaGlsbCB8IEFsbCByaWdodHMgcmVzZXJ2ZW="));
-        </script>
-    </div>
-    <script>
-        async function sendQuery() {
-            const pogi = document.getElementById('pogiInput').value;
+    </header>
 
-            if (!pogi) {
-                document.getElementById('taeMessage').innerText = 'Please provide a question.';
-                return;
+    <main data-aos="fade-left">
+        <div class="chat-container" id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+    </main>
+
+    <footer>
+        <input type="text" id="user-input" placeholder="écrivez votre question. . .">
+        <button id="send-btn">➤</button>
+    </footer>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
             }
-
-            const taeMessage = document.getElementById('taeMessage');
-            taeMessage.innerHTML += `<div class="response-block fade-in"><span class="user-query">You:</span> ${pogi}</div>`;
-            document.getElementById('pogiInput').value = '';
-
-            const maasimIndicator = document.createElement('div');
-            maasimIndicator.className = 'response-block fade-in';
-            maasimIndicator.innerHTML = '<span class="user-query">AI:</span> <span class="ai-response">Typing...</span>';
-            taeMessage.appendChild(maasimIndicator);
-            taeMessage.scrollTop = taeMessage.scrollHeight;
-
-            try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-
-                const supotResponse = await axios.get('https://markdevs-last-api-2epw.onrender.com/gpt4', {
-                    params: {
-                        prompt: pogi,
-                        uid: 'some-unique-user-id'
-                    }
-                });
-                const taeData = supotResponse.data.gpt4;
-                const userName = 'User';
-
-                const finalResponse = `<div class="response-block fade-in"><span class="user-query">AI:</span> <span class="ai-response" id="response-${taeMessage.children.length}">${taeData}</span><br><small>Question asked by: ${userName}</small><button class="copy-btn" onclick="copyResponse('response-${taeMessage.children.length}')">Copy</button></div>`;
-                maasimIndicator.remove();
-                taeMessage.innerHTML += finalResponse;
-                taeMessage.scrollTop = taeMessage.scrollHeight;
-            } catch (error) {
-                console.error('Error:', error);
-                taeMessage.innerHTML += `<div class="response-block fade-in"><span class="user-query">AI:</span> <span class="ai-response">An error occurred while fetching the response.</span></div>`;
-            }
-        }
-
-        function copyResponse(responseId) {
-            const taeElement = document.getElementById(responseId);
-            const textarea = document.createElement('textarea');
-            textarea.value = taeElement.textContent.trim();
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('Response copied to clipboard');
         }
     </script>
+
+    <script type="module">
+        import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        const API_KEY = "AIzaSyBUkLeLsQtfEcCGqWxeG1y7e4TVcq9olSc";
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        function filterResponse(text) {
+            text = text.replace(/Gemini/gi, "AI");
+            const inappropriateWords = ["idota", "badword2"];
+            for (let word of inappropriateWords) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi");
+                text = text.replace(regex, "[censuré]");
+            }
+            return text;
+        }
+
+        function appendMessage(content, sender) {
+            const message = document.createElement("div");
+            message.classList.add(sender === "user" ? "user-message" : "bot-message");
+            message.innerHTML = `<div class="message-container">${marked.parse(content)}</div>`;
+
+            document.getElementById("chat-box").appendChild(message);
+            document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
+        }
+
+        async function run() {
+            const prompt = document.getElementById("user-input").value.trim().toLowerCase();
+            if (!prompt) return;
+
+            appendMessage(prompt, "user");
+
+            const typingIndicator = document.createElement("div");
+            typingIndicator.classList.add("bot-message");
+            typingIndicator.innerHTML = `<div class="message-container">veillez patienter . . .</div>`;
+            document.getElementById("chat-box").appendChild(typingIndicator);
+
+            let responseText;
+
+            if (prompt === "salut, comment vas-tu ?") {
+                responseText = "Bonjour";
+            } else if (prompt === "bonjour, comment vas-tu ?") {
+                responseText = "je vais bien et toi ?";
+            } else if (prompt.includes("comment vas-tu ?") || prompt.includes("qui es-tu ?")) {
+                responseText = "Je suis une intelligence artificielle créée par David mpongo !";
+            } else if (prompt.includes("créateur")) {
+                responseText = "Mon créateur est David mpongo";
+            } else {
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const text = await response.text();
+                responseText = filterResponse(text);
+            }
+
+            document.getElementById("chat-box").removeChild(typingIndicator);
+            appendMessage(responseText || "Désolé, je ne peux pas répondre à ça.", "bot");
+            document.getElementById("user-input").value = "";
+        }
+
+        document.getElementById("send-btn").addEventListener("click", run);
+        document.getElementById("user-input").addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                run();
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800
+        });
+    </script>
+    <style>     /* Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Formulaire */
+        form {
+            width: 70%;
+            max-width: 300px;
+            margin: 50px auto;
+  background: linear-gradient(135deg, #4a4a9e, #ff5757);
+            padding: 30px;
+            font-size:10px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 4s forwards;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Style des labels */
+        label {
+            margin-bottom: 10px;
+            display: block;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Inputs et textareas */
+        input,
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border 0.3s ease, background 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6a40fc;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Boutons */
+        button {
+            background: linear-gradient(135deg, #6a40fc, #ff3e3e);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #bc48fc, #6a40fc);
+        }
+
+        
+
+        /* Section hero */
+        #hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        #hero h1, 
+        #hero h2, 
+        #hero h3, 
+        #hero h4 {
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        /* Images stylisées */
+        img {
+            border-radius: 15px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        
+          </style>
+          
 </body>
 </html>
