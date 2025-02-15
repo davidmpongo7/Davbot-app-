@@ -7,224 +7,127 @@
     <title>davbot AI</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- Lien vers AOS CSS -->
+    <img src="" alt="Bot Avatar" class="w-1 h-6">
     <style>
-        * {
+        body {
+            background-color: #121212; /* Couleur de fond sombre */
+            color: #ffffff; /* Couleur du texte */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Styles pour le menu de navigation */
+        nav {
+            position: absolute;
+            top: 60px; /* Ajustez selon la hauteur de votre en-tête */
+            left: 20px;
+            background-color: #4b4b80; /* Couleur de fond du menu */
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 15px;
+            width: 200px;
+            opacity: 0; /* Masqué par défaut */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            visibility: hidden; /* Masqué par défaut */
+        }
+
+        nav.visible {
+            opacity: 1; /* Visible */
+            visibility: visible; /* Visible */
+        }
+
+        nav.hidden {
+            opacity: 0; /* Masqué */
+            visibility: hidden; /* Masqué */
+        }
+
+        nav ul {
+            list-style: none;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Georgia;
-        }
-
-        body {
-            background: #ff15bd;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background:linear-gradient(135deg, white,gray);
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: blueviolet;
-            color: white;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo img {
-            width: 40px;
-        }
-          
-
-
-        .title p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .icons {
-            display: flex;
-            gap: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        main {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            animation: slide-in-left 0.6s ease-out;
-            overflow-y: auto;
-        }
-
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            max-height: calc(100vh - 180px); /* Ajustement pour éviter le chevauchement avec le footer */
-            padding-bottom: 80px; /* Espace pour le footer */
-        }
-
-        .user-message, .bot-message {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background: #9b30ff;
-            color: white;
-            animation: messageFadeIn 0.5s ease-out;
-        }
-
-        .bot-message {
-            background-color: #6a40fc;
-            color: #ff5f2b;
-            padding: 10px 15px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            max-width: 70%;
-            word-wrap: break-word;
-            animation: messageFadeIn 0.5s ease-out;
-        }
-
-        @keyframes messageFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        footer {
-            display: flex;
-            align-items: center;
-            background:white;
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            position: fixed;
-            bottom: 0;
-            left: 0;
             width: 100%;
-            height: 80px; /* Hauteur du footer */
         }
 
-        footer input {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 25px;
-            background: #f0f0f0;
-            outline: none;
-            transition: border-color 0.3s ease;
+        nav li {
+            margin: 10px 0;
         }
 
-        footer input:focus {
-            border-color: #9b30ff;
+        nav li a {
+            text-decoration: none;
+            color: #ffffff;
+            padding: 10px;
+            display: block;
+            transition: background-color 0.3s;
         }
 
-        footer button {
-            background: #9b30ff;
-            color: #512bff;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin-left: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        nav li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        footer button:hover {
-            background: #8b5cf6;
+        .chatbox {
+            border: 1px solid #444; /* Bordure plus sombre */
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            background-color: #1e1e1e; /* Couleur de fond de la zone de chat */
         }
 
-        .typing-indicator {
+        .input-area {
             display: flex;
-            align-items: center;
-            gap: 5px;
             margin-top: 10px;
         }
 
-        .typing-indicator .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #bbb;
-            border-radius: 50%;
-            animation: blink 1.5s infinite ease-in-out;
+        .input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #444; /* Bordure plus sombre */
+            background-color: #333; /* Couleur de fond de l'input */
+            color: #ffffff; /* Couleur du texte de l'input */
         }
 
-        .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+        .input-area button {
+            padding: 10px;
+            background-color: #4b4b80; /* Couleur de fond du bouton */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .user-message {
+            text-align: right;
+            color: #00bfff; /* Couleur des messages de l'utilisateur */
+        }
+
+        .assistant-message {
+            text-align: left;
+            color: #90ee90; /* Couleur des messages du bot */
+        }
+
+        .typing-effect {
+            border-right: 2px solid #ffffff; /* Curseur de saisie */
+            animation: blink 0.7s step-end infinite; /* Animation de clignotement */
+        }
 
         @keyframes blink {
-            0%, 80%, 100% { opacity: 0; }
-            40% { opacity: 1; }
-        }
-
-        @keyframes slide-in-left {
-            from {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .logo .button {
-            background: white;
-            color: #6a40fc;
-         position:center;
-         text-align:center;
-  margin:60px;
-            padding: 10px 30px ;
-           justify-content: center;
-            text-decoration: none;
-            font-size: 30px;
-            border-radius: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo .button:hover {
-            background: #f3e8fd;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .logo .button:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% {
+                border-color: transparent; /* Faire clignoter le curseur */
             }
         }
     </style>
+    
+
+ 
+    
+
+    
+
+    
+    
+    
     <Style>
     
 
@@ -272,7 +175,7 @@ li {padding: 1px;
        
     
       
-                      <a href="https://www.facebook.com/profile.php?id=100092277325670" class="button">Auteur</a>
+                      <a href="https://www.facebook.com/profile.php?id=100092277325670" class="button"><button>Auteur</button></a>
                       
                   
                      <br>
@@ -284,10 +187,14 @@ li {padding: 1px;
     <main data-aos="fade-left">
         <div class="chat-container" id="chat-box">
             <!-- Messages will appear here -->
-        </div>
+           
+   
+
+  
+       
     </main>
 
-    <footer>
+   
         <input type="text" id="user-input" placeholder="écrivez votre question. . .">
         <button id="send-btn">➤</button>
     </footer>
@@ -475,6 +382,8 @@ li {padding: 1px;
 
         
           </style>
+          
+        
           
 </body>
 </html>
