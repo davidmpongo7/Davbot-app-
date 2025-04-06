@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>mon portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Georgia, serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #008000;
+            color: #ccc;
+            flex-direction: column;
+        }
+
+        .translator-container {
+            background: ;
+            color: #ffffff;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid black;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #00ffff;
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            border-radius: 5px;
+            color: #ccc;
+            resize: none;
+            outline: none;
+            font-size: 16px;
+            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .translator-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        select {
+            width: 100px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .translate-btn, .copy-btn, .exchange {
+            background: #00ff99;
+            color: black;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+          button {
+            background: #00ff99;
+            color: black;
+           padding:10px;
+           flex:1;
+           width:120px;
+           font-size :17px;
+            font-weight: bold;
+            cursor:pointer;
+            margin :3px;
+        }
+
+        button:hover {
+            background: #00cc77;
+            transform: scale(1.05);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: black ;
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            border: 2px solid #00ffff;
+        }
+
+        .btn:hover {
+            background: #00ffff;
+            color: #0d1117;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="translator-container">
+        <h1>DAVBOT TRADUCTEUR</h1>
+        <textarea id="gojo" spellcheck="false" placeholder="Entrez le texte à traduire"></textarea>
+
+        <div class="translator-controls">
+            <select id="Naruto"></select>
+            <button id="Madara"><i class="fas fa-exchange-alt"></i></button>
+            <select id="David"></select>
+        </div>
+
+        <textarea id="Sasuke" spellcheck="false" readonly placeholder="Le texte traduit..."></textarea>
+
+        <div class="button-container">
+            <button id="sunj">Traduire</button>
+            <button id="Jin">Copier</button>
+        </div>
+
+       
+    </div>
+
+    <script>
+        const countries = {
+        "en": "Anglais",
+        "fr": "Français",
+        
+           "sq": "Albanais",
+            "am": "Amharique",
+             "ar": "Arabe",
+            "hy": "Arménien", "az": "Azerbaïdjanais", "eu": "Basque", "bn": "Bengali",
+            "bs": "Bosniaque", "bg": "Bulgare", "ca": "Catalan", "zh-CN": "Chinois",
+            "hr": "Croate", "cs": "Tchèque", "da": "Danois", "nl": "Néerlandais",
+             "et": "Estonien", "fi": "Finnois", 
+            "ka": "Géorgien", "de": "Allemand", "el": "Grec", "gu": "Gujarati",
+            "he": "Hébreu", "hi": "Hindi", "hu": "Hongrois", "is": "Islandais",
+            "id": "Indonésien", "it": "Italien", "ja": "Japonais", "kk": "Kazakh",
+            "km": "Khmer", "ko": "Coréen", "ky": "Kirghize", "lt": "Lituanien",
+            "lv": "Letton", "mk": "Macédonien", "ms": "Malais", "mn": "Mongol",
+            "ne": "Népalais", "no": "Norvégien", "fa": "Persan", "pl": "Polonais",
+            "pt": "Portugais", "ro": "Roumain", "ru": "Russe", "sr": "Serbe",
+            "sk": "Slovaque", "sl": "Slovène", "es": "Espagnol", "sw": "Swahili",
+            "sv": "Suédois", "ta": "Tamoul", "th": "Thaï", "tr": "Turc",
+            "uk": "Ukrainien", "ur": "Ourdou", "uz": "Ouzbek", "vi": "Vietnamien",
+            "cy": "Gallois"
+        };
+
+        document.querySelectorAll("select").forEach((select, id) => {
+            for (let code in countries) {
+                let selected = id == 0 ? code === "fr" : code === "en";
+                let option = `<option value="${code}" ${selected ? "selected" : ""}>${countries[code]}</option>`;
+                select.insertAdjacentHTML("beforeend", option);
+            }
+        });
+
+        document.getElementById("Madara").addEventListener("click", () => {
+            let fromSelect = document.getElementById("Naruto");
+            let toSelect = document.getElementById("David");
+            let fromText = document.getElementById("gojo");
+            let toText = document.getElementById("Sasuke");
+
+            [fromSelect.value, toSelect.value] = [toSelect.value, fromSelect.value];
+            [fromText.value, toText.value] = [toText.value, fromText.value];
+        });
+
+        document.getElementById("sunj").addEventListener("click", async () => {
+            const fromText = document.getElementById("gojo").value.trim();
+            const translateFrom = document.getElementById("Naruto").value;
+            const translateTo = document.getElementById("David").value;
+            const toText = document.getElementById("Sasuke");
+
+            if (!fromText) {
+                alert("Veuillez entrer un texte à traduire.");
+                return;
+            }
+
+            toText.value = "Traduction en cours...";
+            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(fromText)}&langpair=${translateFrom}|${translateTo}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                toText.value = data.responseData.translatedText || "Traduction indisponible.";
+            } catch (error) {
+                toText.value = "Erreur de traduction.";
+            }
+        });
+
+        document.getElementById("Jin").addEventListener("click", () => {
+            navigator.clipboard.writeText(document.getElementById("Sasuke").value);
+        });
+    </script>
+</body>
+  </html>
+  
