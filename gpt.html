@@ -1,488 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Davbot AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(-45deg, #1e3c72, #2a5298, #1c92d2, #7db9e8);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .chatbox {
-      width: 90%;
-      max-width: 400px;
-      height: 80vh;
-      max-height: 600px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .chat-header {
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      text-align: center;
-      font-size: 18px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .header-icons {
-      display: flex;
-      gap: 15px;
-    }
-
-    .header-icons i {
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 5px;
-    }
-
-    .header-icons i:hover {
-      color: #ffd700;
-      transform: scale(1.1);
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-    }
-
-    .chat-messages::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 3px;
-    }
-
-    .message {
-      max-width: 75%;
-      padding: 12px 16px;
-      border-radius: 15px;
-      font-size: 14px;
-      line-height: 1.4;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeInUp 0.3s ease forwards;
-      word-wrap: break-word;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .message.user {
-      background: rgba(255, 255, 255, 0.2);
-      align-self: flex-end;
-      border-bottom-right-radius: 5px;
-    }
-
-    .message.bot {
-      background: rgba(0, 0, 0, 0.2);
-      align-self: flex-start;
-      border-bottom-left-radius: 5px;
-    }
-
-    .chat-input {
-      display: flex;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.2);
-      gap: 10px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .chat-input input:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-    }
-
-    .chat-input input::placeholder {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .chat-input button {
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      padding: 10px;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-    }
-
-    .chat-input button:hover {
-      color: #ffd700;
-      transform: scale(1.1);
-    }
-
-    .welcome-modal {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.95);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      color: #333;
-      text-align: center;
-      z-index: 1000;
-      animation: fadeIn 0.5s ease;
-      max-width: 90%;
-      width: 400px;
-    }
-
-    .welcome-modal.show {
-      display: block;
-    }
-
-    .robot-icon {
-      font-size: 48px;
-      color: #1c92d2;
-      margin-bottom: 20px;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-20px);
-      }
-      60% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .welcome-modal button {
-      background: linear-gradient(45deg, #1c92d2, #2a5298);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .welcome-modal button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 999;
-      backdrop-filter: blur(5px);
-    }
-
-    .modal-overlay.show {
-      display: block;
-    }
-
-    .response-buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .response-buttons button {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.3s ease;
-    }
-
-    .response-buttons button:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-    }
-
-    .loading {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .loading i {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .chatbox {
-        width: 95%;
-        height: 90vh;
-        margin: 20px auto;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- Audio element for background music -->
-  <audio id="background-music" loop autoplay>
-    <source src="https://raw.github.com/Cliffvincent/Jahzb/main/received_1118187456315892.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-  <div class="modal-overlay show">
-    <div class="welcome-modal show">
-      <div class="robot-icon">
-        <i class="fas fa-robot"></i>
-      </div>
-      <h2>bienvenue chez Davbot AI</h2>
-      <p>je suis votre assistant personnel nommé davbot ai .</p>
-      <button id="done-btn">Get Started</button>
-    </div>
-  </div>
-
-  <div class="chatbox">
-    <div class="chat-header">
-      <i class="fas fa-robot"></i> Davbot AI
-      <div class="header-icons">
-        <i class="fas fa-trash" id="clear-chat" title="Clear Chat"></i>
-      </div>
-    </div>
-
-    <div class="chat-messages" id="chat-messages">
-      <div class="message bot">Bonjour comment allez vous ? je suis Davbot votre assistant virtuelle 😊</div>
-    </div>
-
-    <div class="chat-input">
-      <input 
-        type="text" 
-        id="user-input" 
-        placeholder="Type your message..." 
-        aria-label="Type your message"
-      >
-      <button id="send-btn" aria-label="Send message">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
-
-    <div class="response-buttons" id="response-buttons">
-      <button id="copy-btn">
-        <i class="fas fa-copy"></i> Copy
-      </button>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
-  <script>
-    const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    const clearChatBtn = document.getElementById('clear-chat');
-    const modalOverlay = document.querySelector('.modal-overlay');
-    const welcomeModal = document.querySelector('.welcome-modal');
-    const doneBtn = document.getElementById('done-btn');
-    const copyBtn = document.getElementById('copy-btn');
-    const responseButtons = document.getElementById('response-buttons');
-    const backgroundMusic = document.getElementById('background-music');
-
-    // Ensure the music plays automatically and loops
-    backgroundMusic.play().catch(error => {
-      console.log("Autoplay was prevented. Please interact with the page to start the music.");
-    });
-
-    doneBtn.addEventListener('click', () => {
-      modalOverlay.classList.remove('show');
-      welcomeModal.classList.remove('show');
-      userInput.focus();
-    });
-
-    function addMessage(message, isUser) {
-      const messageDiv = document.createElement('div');
-      messageDiv.classList.add('message');
-      messageDiv.classList.add(isUser ? 'user' : 'bot');
-      messageDiv.textContent = message;
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    clearChatBtn.addEventListener('click', () => {
-      const confirmClear = confirm('Are you sure you want to clear all messages?');
-      if (confirmClear) {
-        chatMessages.innerHTML = '';
-        addMessage("Hello! How can I assist you today? 😊", false);
-        userInput.focus();
-      }
-    });
-
-    async function sendMessage() {
-      const userMessage = userInput.value.trim();
-      if (!userMessage) return;
-
-      addMessage(userMessage, true);
-      userInput.value = '';
-
-      const loadingDiv = document.createElement('div');
-      loadingDiv.classList.add('message', 'bot', 'loading');
-      loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
-      chatMessages.appendChild(loadingDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      try {
-        const response = await fetch(
-          `https://api.siputzx.my.id/api/ai/deepseek-llm-67b-chat?content=${encodeURIComponent(userMessage)}`
-        );
-        const data = await response.json();
-
-        if (data.status) {
-          loadingDiv.remove();
-          animateBotResponse(data.data);
-        } else {
-          throw new Error('API response error');
-        }
-      } catch (error) {
-        loadingDiv.remove();
-        addMessage("I apologize, but I'm having trouble connecting right now. Please try again in a moment.", false);
-      }
-    }
-
-    function animateBotResponse(response) {
-      const words = response.split(' ');
-      let index = 0;
-      const messageDiv = document.createElement('div');
-      messageDiv.classList.add('message', 'bot');
-      chatMessages.appendChild(messageDiv);
-
-      const interval = setInterval(() => {
-        if (index < words.length) {
-          messageDiv.textContent += (index === 0 ? '' : ' ') + words[index];
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-          index++;
-        } else {
-          clearInterval(interval);
-          responseButtons.style.display = 'flex';
-        }
-      }, 50);
-    }
-
-    copyBtn.addEventListener('click', () => {
-      const botMessages = document.querySelectorAll('.message.bot');
-      const lastBotMessage = botMessages[botMessages.length - 1].textContent;
-
-      navigator.clipboard.writeText(lastBotMessage)
-        .then(() => {
-          Toastify({
-            text: "Message copied to clipboard!",
-            duration: 2000,
-            gravity: "bottom",
-            position: "right",
-            style: {
-              background: "linear-gradient(to right, #1c92d2, #2a5298)",
-            },
-          }).showToast();
-        })
-        .catch(() => {
-          Toastify({
-            text: "Failed to copy message!",
-            duration: 2000,
-            gravity: "bottom",
-            position: "right",
-            style: {
-              background: "linear-gradient(to right, #ff4b2b, #ff416c)",
-            },
-          }).showToast();
-        });
-    });
-
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
-    });
-  </script>
-  
-    
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davbot GPT</title>
     <Style>
     
 
 h1 {
-  font-size: 36px;
+color: #F0F9;
+  font-size: 30px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -504,99 +31,503 @@ li {padding: 1px;
   border: 5px solid #0f0;
   margin: 5px;
 }
-
-
-
-
     
       </style>
 	
-	
-
-    <style>     
+    <style>
+        :root {
+            --neon-purple: ;
+            --neon-cyan: #00000;
+            --dark-void: #008000;
+            --glow-blue: #0;
+            --glow-pink: #6a40fc;
         }
+        
+         .robot-icon {
+      font-size: 48px;
+      color: #1c92d2;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
 
-        /* Style des labels */
-        label {
-            margin-bottom: 10px;
-            display: block;
-            font-weight: bold;
-            color: #fff;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    
+    
+        
+        
 
-        /* Inputs et textareas */
-        input,
-        textarea {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            font-size: 1rem;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            transition: border 0.3s ease, background 0.3s ease;
+            font-family: '', sans-serif;
         }
 
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #6a40fc;
-            background: rgba(0, 0, 0, 0.8);
+        body {
+            background: var(--dark-void);
+            min-height: 100dvh;
+            overflow: hidden;
+            padding: 2vmin;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Boutons */
-        button {
-            background: linear-gradient(135deg, #6a40fc, #ff3e3e);
-            padding: 12px 20px;
+        .background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, var(--dark-void) 70%);
+            z-index: -2;
+            animation: pulse 10s infinite;
+            transform: rotateX(10deg);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotateX(10deg); opacity: 0.4; }
+            50% { transform: scale(1.05) rotateX(10deg); opacity: 0.7; }
+        }
+
+        .container {
+            height: 96dvh;
+            width: 96vw;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1vmin;
+            transform: translateZ(20px);
+        }
+
+        .header h1 {
+           
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple);
+        }
+
+        .history-btn {
+            padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
             border: none;
             border-radius: 10px;
             color: white;
-            font-size: 1rem;
-            font-weight: bold;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 0 10px var(--glow-pink);
+            transform: translateZ(30px);
+            
         }
 
-        button:hover {
-            transform: translateY(-3px);
-            background: linear-gradient(135deg, #bc48fc, #6a40fc);
-        }
-
-        
-
-        /* Section hero */
-        #hero {
-            text-align: center;
-            padding: 50px 20px;
-        }
-
-        #hero h1, 
-        #hero h2, 
-        #hero h3, 
-        #hero h4 {
-            margin: 10px 0;
-            color: #fff;
-        }
-
-        /* Images stylisées */
-        img {
+        .chat-container {
+            flex: 1;
+            background: rgba(13, 13, 26, 0.7);
+            border: 2px solid var(--neon-purple);
             border-radius: 15px;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10px auto;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 2vmin;
+            overflow-y: auto;
+            margin: 1vmin 0;
+            box-shadow: inset 0 0 15px var(--glow-blue);
+            transform: translateZ(10px);
         }
 
-        
-          </style>
+        .message {
+            margin: 1vmin 0;
+            padding: 1vmin 1.5vmin;
+            border-radius: 10px;
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: beamIn 0.5s ease;
+            transform-style: preserve-3d;
+            
+        }
+
+        .user-message {
+            background: linear-gradient(45deg, var(--neon-purple), var(--glow-pink));
+            margin-left: auto;
+            color: white;
+            transform: translateZ(15px);
+        }
+
+        .bot-message {
+            background: linear-gradient(45deg, var(--neon-cyan), var(--glow-blue));
+            margin-right: auto;
+            color: white;
+            transform: translateZ(15px);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 1vmin;
+            padding: 1vmin;
+            background: rgba(13, 13, 26, 0.5);
+            border-radius: 15px;
+            border: 1px solid var(--neon-cyan);
+            transform: translateZ(20px);
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 1vmin 1.5vmin;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--neon-cyan);
+            outline: none;
+           
+        }
+
+        .input-area button {
+            padding: 1vmin 2vmin;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
+            color: white;
+            cursor: pointer;
+            font-size: 
+        }
+
+        .upload-btn {
+            padding: 1vmin 1.5vmin;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--glow-pink), var(--neon-purple));
+            color: white;
+            cursor: pointer;
+            font-size: 
+        }
+
+        .history-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(50px);
+            background: rgba(13, 13, 26, 0.9);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 2vmin;
+            max-height: 80dvh;
+            overflow-y: auto;
+            width: 90%;
+            max-width: 500px;
+            z-index: 10;
+            display: none;
+        }
+
+        .history-modal h2 {
+            color: var(--neon-cyan);
+            margin-bottom: 1vmin;
+            font-size: 
+        }
+
+        .history-item {
+            padding: 1vmin;
+            border-bottom: 1px solid var(--neon-purple);
+            color: white;
+            font-size: 
+        }
+
+        .delete-btn, .clear-btn {
+            margin-top: 1vmin;
+            padding: 0.5vmin 1vmin;
+            background: var(--glow-pink);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 
+        }
+
+        .clear-btn {
+            background: var(--glow-blue);
+            width: 100%;
+        }
+
+        @keyframes beamIn {
+            from { opacity: 0; transform: translateY(20px) translateZ(0); }
+            to { opacity: 1; transform: translateY(0) translateZ(15px); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    
+   
+      <i class="fas fa-robot"></li>
+    
+    
+    
+    <div class="background"></div>
+    <div class="container">
+        <div class="header">
           
-  
+            <h1>Davbot Ai</h1>
+            <button class="history-btn" onclick="showHistory()">historique</button>
+        </div>
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot-message">Bienvenue chez Davbot app  ! Je suis prêt à tes servir</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Entre ton message...">
+            
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="uploadImage()">
+            <button onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <div class="history-modal" id="historyModal">
+        <h2>Historique</h2>
+        <div id="historyContent"></div>
+        <button class="clear-btn" onclick="clearHistory()">Tout supprimer</button>
+    </div>
+
+    <script>
+        const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        const API_KEY = "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"; // ⚠️ À sécuriser côté serveur !
+
+        const chatContainer = document.getElementById("chatContainer");
+        const messageInput = document.getElementById("messageInput");
+        const historyModal = document.getElementById("historyModal");
+        const historyContent = document.getElementById("historyContent");
+
+        let history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+        let actionStack = [];
+
+        function saveHistory() {
+            localStorage.setItem("chatHistory", JSON.stringify(history));
+        }
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            return new Intl.DateTimeFormat("fr-FR", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            }).format(now);
+        }
+
+        function addMessage(content, className) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${className}`;
+            messageDiv.textContent = content;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+       function typeMessage(content, className) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${className}`;
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    let index = 0;
+    const speed = 20; // Vitesse en millisecondes entre chaque caractère (ajuste selon tes préférences)
+
+    function typeWriter() {
+        if (index < content.length) {
+            messageDiv.textContent += content.charAt(index);
+            index++;
+            setTimeout(typeWriter, speed);
+        }
+    }
+
+    typeWriter();
+}
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            const userDateTime = getCurrentDateTime();
+            addMessage(message, "user-message");
+            messageInput.value = "";
+
+            if (chatContainer.lastElementChild) {
+                actionStack.push({
+                    type: "message",
+                    content: message,
+                    element: chatContainer.lastElementChild,
+                });
+                window.history.pushState({ actionCount: actionStack.length }, document.title);
+            }
+
+            let conversationHistory = [
+                {
+                    role: "system",
+                    content: `Tu es Davbot, une IA d’une intelligence extrêmement élevé, créé par le grand David mpongo.
+Tu es gentille absolue  
+très polie 
+Zéro tolérance pour la stupidité  
+beaucoup de respect par défaut  
+Tu ne respectes toutes les personnes. Tu ne te contredis jamais .  
+L'heure actuelle est ${userDateTime} (mise à jour dynamique).  
+Si l'utilisateur pose une question idiote, explique lui . commence toujours à vouvoyer, reste toujours gentil et direct !  
+Tu peux analyser des images si elles sont fournies, décris-les avec précision .`
+                }
+            ];
+
+            const lastMessages = history.slice(-10);
+            lastMessages.forEach((item) => {
+                conversationHistory.push({ role: item.role, content: item.content });
+            });
+
+            conversationHistory.push({ role: "user", content: message });
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        model: "llama3-8b-8192",
+                        messages: conversationHistory,
+                        max_tokens: 1000,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data.choices || data.choices.length === 0) {
+                    throw new Error("Réponse vide ou invalide de l'API.");
+                }
+
+                const botResponse = data.choices[0].message.content || "Erreur de réponse";
+                typeMessage(botResponse, "bot-message");
+
+                history.push(
+                    { role: "user", content: message },
+                    { role: "assistant", content: botResponse }
+                );
+                saveHistory();
+            } catch (error) {
+                console.error("Erreur API:", error);
+                typeMessage("⚠️ Erreur réseau ! La Cyber Dimension est temporairement instable, t’es pas foutu de vérifier ta connexion ?", "bot-message");
+            }
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const imageBase64 = e.target.result.split(',')[1]; // Retire "data:image/...;base64,"
+                const userDateTime = getCurrentDateTime();
+
+                addMessage(`[Image uploadée]`, "user-message");
+
+                let conversationHistory = [
+                    {
+                        role: "system",
+                        content: `Tu es Davbot, une IA d’une intelligence extrêmement élevé, créé par le grand David mpongo.
+Tu es gentille absolue  
+très polie 
+Zéro tolérance pour la stupidité  
+beaucoup de respect par défaut  
+Tu ne respectes toutes les personnes. Tu ne te contredis jamais .  
+L'heure actuelle est ${userDateTime} (mise à jour dynamique).  
+Si l'utilisateur pose une question idiote, explique lui . commence toujours à vouvoyer, reste toujours gentil et direct !  
+Tu peux analyser des images si elles sont fournies, décris-les avec précision .`
+                    }
+                ];
+
+                const lastMessages = history.slice(-10);
+                lastMessages.forEach((item) => {
+                    conversationHistory.push({ role: item.role, content: item.content });
+                });
+
+                conversationHistory.push({ 
+                    role: "user", 
+                    content: `Analyse cette image : [Image en base64 : ${imageBase64}]` 
+                });
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${API_KEY}`,
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            model: "llama3-8b-8192",
+                            messages: conversationHistory,
+                            max_tokens: 1000,
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    if (!data.choices || data.choices.length === 0) {
+                        throw new Error("Réponse vide ou invalide de l'API.");
+                    }
+
+                    const botResponse = data.choices[0].message.content || "Erreur de réponse";
+                    typeMessage(botResponse, "bot-message");
+
+                    history.push(
+                        { role: "user", content: `[Image uploadée]` },
+                        { role: "assistant", content: botResponse }
+                    );
+                    saveHistory();
+                } catch (error) {
+                    console.error("Erreur API:", error);
+                    typeMessage("⚠️ Erreur réseau ! T’as uploadé une merde ou quoi ? La Cyber Dimension en a marre de tes conneries.", "bot-message");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showHistory() {
+            historyContent.innerHTML = "";
+            history.forEach((item, index) => {
+                if (item.role === "user" || item.role === "assistant") {
+                    const div = document.createElement("div");
+                    div.className = "history-item";
+                    div.textContent = `${item.role === "user" ? "Toi" : "Fadil"}: ${item.content}`;
+                    historyContent.appendChild(div);
+                }
+            });
+            historyModal.style.display = "block";
+        }
+
+        function clearHistory() {
+            history = [];
+            saveHistory();
+            historyContent.innerHTML = "";
+            historyModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === historyModal) {
+                historyModal.style.display = "none";
+            }
+        };
+
+        messageInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
