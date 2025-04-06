@@ -366,9 +366,12 @@ li {padding: 1px;
                 {
                     role: "system",
                     content: `Tu es Davbot, une IA d’une intelligence extrêmement élevé, créé par le grand David mpongo.
+ ma copine s'appelle Fidéline Bonda ❤️ la reine des son cœur 
 Tu es gentille absolue  
 très polie 
-Zéro tolérance pour la stupidité  
+la copine de David mpongo s'appelle s'appelle Fidéline Bonda ❤️ la reine des ton cœur
+Zéro tolérma
+ance pour la stupidité  
 beaucoup de respect par défaut  
 Tu ne respectes toutes les personnes. Tu ne te contredis jamais .  
 L'heure actuelle est ${userDateTime} (mise à jour dynamique).  
@@ -491,7 +494,7 @@ Tu peux analyser des images si elles sont fournies, décris-les avec précision 
                     saveHistory();
                 } catch (error) {
                     console.error("Erreur API:", error);
-                    typeMessage("⚠️ Erreur réseau ! T’as uploadé une merde ou quoi ? La Cyber Dimension en a marre de tes conneries.", "bot-message");
+                    typeMessage("⚠️ Erreur réseau !  veillez vérifiée votre connexion internet .", "bot-message");
                 }
             };
             reader.readAsDataURL(file);
@@ -503,7 +506,7 @@ Tu peux analyser des images si elles sont fournies, décris-les avec précision 
                 if (item.role === "user" || item.role === "assistant") {
                     const div = document.createElement("div");
                     div.className = "history-item";
-                    div.textContent = `${item.role === "user" ? "Toi" : "Fadil"}: ${item.content}`;
+                    div.textContent = `${item.role === "user" ? "Toi" : "Davbot app"}: ${item.content}`;
                     historyContent.appendChild(div);
                 }
             });
