@@ -267,7 +267,7 @@ li {padding: 1px;
         <div class="header">
           
             <h1>Davbot Ai</h1>
-            <button class="history-btn" onclick="showHistory()">historique</button>
+            <button class="history-btn" onclick="showHistory()">archives</button>
         </div>
         <div class="chat-container" id="chatContainer">
             <div class="message bot-message">Bienvenue chez Davbot app  ! Je suis prêt à tes servir</div>
@@ -281,14 +281,14 @@ li {padding: 1px;
     </div>
 
     <div class="history-modal" id="historyModal">
-        <h2>Historique</h2>
+        <h2>archives</h2>
         <div id="historyContent"></div>
-        <button class="clear-btn" onclick="clearHistory()">Tout supprimer</button>
+        <button class="clear-btn" onclick="clearHistory()">supprimer</button>
     </div>
 
     <script>
         const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-        const API_KEY = "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"; // ⚠️ À sécuriser côté serveur !
+        const API_KEY = "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"; // ⚠️ À sécuriser côté serveur !id=
 
         const chatContainer = document.getElementById("chatContainer");
         const messageInput = document.getElementById("messageInput");
@@ -365,18 +365,15 @@ li {padding: 1px;
             let conversationHistory = [
                 {
                     role: "system",
-                    content: `Tu es Davbot, une IA d’une intelligence extrêmement élevé, créé par le grand David mpongo.
- ma copine s'appelle Fidéline Bonda ❤️ la reine des son cœur 
+                    content: `Tu es Davbot, une IA d’une intelligence extrêmement élevé, créé par le grand génie David mpongo.
 Tu es gentille absolue  
 très polie 
-la copine de David mpongo s'appelle s'appelle Fidéline Bonda ❤️ la reine des ton cœur
-Zéro tolérma
-ance pour la stupidité  
+Zéro tolérance pour la stupidité  
 beaucoup de respect par défaut  
 Tu ne respectes toutes les personnes. Tu ne te contredis jamais .  
 L'heure actuelle est ${userDateTime} (mise à jour dynamique).  
 Si l'utilisateur pose une question idiote, explique lui . commence toujours à vouvoyer, reste toujours gentil et direct !  
-Tu peux analyser des images si elles sont fournies, décris-les avec précision .`
+Tu peux analyser des images si elles sont fournies, décris-les avec précision .
                 }
             ];
 
@@ -420,7 +417,7 @@ Tu peux analyser des images si elles sont fournies, décris-les avec précision 
                 saveHistory();
             } catch (error) {
                 console.error("Erreur API:", error);
-                typeMessage("⚠️ Erreur réseau ! La Cyber Dimension est temporairement instable, t’es pas foutu de vérifier ta connexion ?", "bot-message");
+                typeMessage("⚠️ Erreur réseau ! vous devriez vérifier votre connexion !", "bot-message");
             }
         }
 
